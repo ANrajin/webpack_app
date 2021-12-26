@@ -1,3 +1,3 @@
 export default function HelloWorld() {
-  document.getElementById("app").innerHTML = "<h1>Hello World</h1>";
+  document.getElementById("app").innerHTML = "<h3>Hello Dolly</h3>";
 }

@@ -1,12 +1,21 @@
 const path = require("path");
 
+//js minify plugin
+const TerserPlugin = require("terser-webpack-plugin");
+
+//Css extract plugin
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+//Remove the previous file after successful compilation
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
 module.exports = {
   //file to compile
   entry: "./src/index.js",
 
   //output the compile file
   output: {
-    filename: "bundle.js",
+    filename: "bundle.[contenthash].js", //[contenthash] - will add md5 string with the file name
     path: path.resolve(__dirname, "./dist"),
     publicPath: "dist/",
   },
@@ -25,7 +34,7 @@ module.exports = {
       {
         //rules to compile css files
         test: /\.css$/,
-        use: ["style-loader", "css-loader"], //first style-loader & then css-loader
+        use: [MiniCssExtractPlugin.loader, "css-loader"], //first style-loader & then css-loader
       },
       {
         //rule to configure babel js
@@ -41,4 +50,11 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new TerserPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "app.[contenthash].css",
+    }),
+    new CleanWebpackPlugin(),
+  ],
 };
